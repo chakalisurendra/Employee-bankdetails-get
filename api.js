@@ -1,4 +1,5 @@
 const {
+    DynamoDBClient,
     GetItemCommand,
     // PutItemCommand,
     // DeleteItemCommand,
@@ -6,7 +7,7 @@ const {
     //UpdateItemCommand,
 } = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
-const db = require("./db");
+const client = new DynamoDBClient();
 
 const getBankDetails = async (event) => {
     const response = { statusCode: 200 };
@@ -15,7 +16,7 @@ const getBankDetails = async (event) => {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             Key: marshall({ empId: event.pathParameters.empId }),
         };
-        const { Item } = await db.send(new GetItemCommand(params));
+        const { Item } = await client.send(new GetItemCommand(params));
         console.log({ Item });
         response.body = JSON.stringify({
             message: "Successfully retrieved post.",
@@ -36,7 +37,7 @@ const getBankDetails = async (event) => {
 const getAllBanks = async () => {
     const response = { statusCode: 200 };
     try {
-        const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
+        const { Items } = await client.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
         response.body = JSON.stringify({
             message: "Successfully retrieved all posts.",
             data: Items.map((item) => unmarshall(item)),
