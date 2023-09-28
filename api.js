@@ -6,7 +6,7 @@ const {
     //UpdateItemCommand,
 } = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
-const getEmployeeBankDetails = async (event) => {
+const getBankDetails = async (event) => {
     const response = { statusCode: 200 };
     try {
         const params = {
@@ -31,7 +31,7 @@ const getEmployeeBankDetails = async (event) => {
     }
     return response;
 };
-const getAllEmployeeBankDetails = async () => {
+const getAllBanks = async () => {
     const response = { statusCode: 200 };
     try {
         const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));

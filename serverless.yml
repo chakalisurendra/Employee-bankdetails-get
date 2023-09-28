@@ -11,9 +11,9 @@ custom:
 plugins:
   - serverless-iam-roles-per-function
 functions:
-  getEmployeeBankDetails:
-    handler: api.getEmployeeBankDetails
-    name: employee-bank-get
+  getBankDetails:
+    handler: api.getBankDetails
+    name: bank-get
     memorySize: 128 # mb
     timeout: 5 # seconds
     events:
@@ -25,9 +25,9 @@ functions:
         Action:
           - "dynamodb:GetItem"
         Resource: !GetAtt PostsTable.Arn
-  getAllEmployeeBankDetails:
-    handler: api.getAllEmployeeBankDetails
-    name: get-all-employee-bank-details
+  getAllBanks:
+    handler: api.getAllBanks
+    name: get-all-bank
     memorySize: 128 # mb
     timeout: 5 # seconds
     events:
