@@ -134,9 +134,9 @@ const getAllBanks = async () => {
 // };
 
 module.exports = {
-    getPost,
+    getBankDetails,
     // createPost,
     // updatePost,
     // deletePost,
-    getAllPosts,
+    getAllBanks,
 };
