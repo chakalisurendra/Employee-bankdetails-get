@@ -19,7 +19,7 @@ const getBankDetails = async (event) => {
         const { Item } = await client.send(new GetItemCommand(params));
         console.log({ Item });
         response.body = JSON.stringify({
-            message: "Successfully retrieved post.",
+            message: "Successfully retrieved Employee bank details.",
             data: (Item) ? unmarshall(Item) : {},
             rawData: Item,
         });
@@ -27,7 +27,7 @@ const getBankDetails = async (event) => {
         console.error(e);
         response.statusCode = 500;
         response.body = JSON.stringify({
-            message: "Failed to get post.",
+            message: "Failed to get employee bank details.",
             errorMsg: e.message,
             errorStack: e.stack,
         });
@@ -39,7 +39,7 @@ const getAllBanks = async () => {
     try {
         const { Items } = await client.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
         response.body = JSON.stringify({
-            message: "Successfully retrieved all posts.",
+            message: "Successfully retrieved all Employees bank details.",
             data: Items.map((item) => unmarshall(item)),
             Items,
         });
