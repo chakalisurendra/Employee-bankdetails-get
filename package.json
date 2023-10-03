@@ -4,7 +4,7 @@
     "description": " Employee-Bank-Details-Get-API using API Gateway and AWS Lambda",
     "main": "api.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha"
     },
     "keywords": [],
     "author": "Surendra",
@@ -12,9 +12,11 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.415.0",
         "@aws-sdk/util-dynamodb": "^3.415.0",
-        "aws-sdk": "^2.1460.0"
+        "aws-sdk": "^2.1460.0",
+        "chai": "^4.3.8"
     },
     "devDependencies": {
+        "lambda-tester": "^4.0.1",
         "serverless-iam-roles-per-function": "^3.2.0"
     }
 }

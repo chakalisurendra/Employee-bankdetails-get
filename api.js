@@ -12,6 +12,9 @@ const client = new DynamoDBClient();
 const getBankDetails = async (event) => {
     const response = { statusCode: 200 };
     try {
+        if (!event.pathParameters || !event.pathParameters.empId) {
+            throw new Error('empId is missing in the path parameters');
+          }
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             Key: marshall({ empId: event.pathParameters.empId }),
@@ -19,7 +22,7 @@ const getBankDetails = async (event) => {
         const { Item } = await client.send(new GetItemCommand(params));
         console.log({ Item });
         response.body = JSON.stringify({
-            message: "Successfully retrieved Employee bank details.",
+            message: "Successfully retrieved Employee bank.",
             data: (Item) ? unmarshall(Item) : {},
             rawData: Item,
         });
