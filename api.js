@@ -17,8 +17,10 @@ const getBankDetails = async (event) => {
       Key: marshall({ empId: event.pathParameters.empId }),
     };
     const { Itemdata } = await client.send(new GetItemCommand(params));
-    console.log({ Item });
+    console.log({ Itemdata });
     if (Itemdata && Itemdata.Item) {
+      console.log("entered into a 200");
+
       response.statusCode = 200;
       response.body = JSON.stringify({
         message: "Successfully retrieved Employee bank.",
@@ -26,6 +28,8 @@ const getBankDetails = async (event) => {
         rawData: Itemdata,
       });
     } else {
+      console.log("entered into a 404");
+
       response.statusCode = 404;
       response.body = JSON.stringify({
         message: "Employee Bank details not found",
