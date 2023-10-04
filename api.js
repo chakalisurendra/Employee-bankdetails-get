@@ -18,11 +18,22 @@ const getBankDetails = async (event) => {
     };
     const { Item } = await client.send(new GetItemCommand(params));
     console.log({ Item });
-    response.body = JSON.stringify({  
+    if (!Item) {
+      // Handle item not found
+      response.statusCode = 404;
+      response.body = JSON.stringify({
+        message: "Employee bank details not found.",
+      });
+    } else {
+      response.body = JSON.stringify({
         message: "Successfully retrieved Employee bank.",
-        data: (Item) ? unmarshall(Item) : {},
-        rawData: Item,
-    });
+        data: unmarshall(Item),
+      });
+    }
+    // response.body = JSON.stringify({  
+    //     message: "Successfully retrieved Employee bank.",
+    //     data: (Item) ? unmarshall(Item) : {},
+    // });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
