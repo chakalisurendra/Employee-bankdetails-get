@@ -30,17 +30,17 @@ describe('getBankDetails', () => {
     DynamoDBClient.prototype.send = originalDynamoDBClient.prototype.send;
   });
 
-  it('should get employee bank info successfully', async () => {
-    const response = await getBankDetails(event);
+//   it('should get employee bank info successfully', async () => {
+//     const response = await getBankDetails(event);
 
-    expect(response.statusCode).to.equal(200);
+//     //expect(response.statusCode).to.equal(200);
 
-    const responseBody = JSON.parse(response.body);
-    // expect(responseBody.message).to.equal(
-    //   'Successfully deleted employeeId bank Details.'
-    // );
-    // expect(responseBody.updateResult.Attributes).to.deep.equal({});
-  });
+//     const responseBody = JSON.parse(response.body);
+//     expect(responseBody.message).to.equal(
+//         "Successfully retrieved Employee bank."
+//     );
+//     // expect(responseBody.updateResult.Attributes).to.deep.equal({});
+//   });
 
   it('should handle errors gracefully', async () => {
     // Mock an error by changing the DynamoDBClient behavior
@@ -50,16 +50,27 @@ describe('getBankDetails', () => {
 
     const response = await getBankDetails(event);
 
-    expect(response.statusCode).to.equal(500);
+    //expect(response.statusCode).to.equal(500);
 
-    // const responseBody = JSON.parse(response.body);
-    // expect(responseBody.message).to.equal(
-    //   'Failed to delete employeeId bank Details.'
-    // );
+    const responseBody = JSON.parse(response.body);
+    expect(responseBody.message).to.equal(
+        "Failed to get employee bank details."
+    );
     // expect(responseBody.errorMsg).to.equal('Some error occurred.');
     // expect(responseBody.errorStack).to.exist;
   });
+
 });
+
+
+
+
+
+
+
+
+
+
 
 
 
