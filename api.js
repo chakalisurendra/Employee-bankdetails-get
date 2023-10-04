@@ -1,61 +1,73 @@
 const {
-    DynamoDBClient,
-    GetItemCommand,
-    // PutItemCommand,
-    // DeleteItemCommand,
-    ScanCommand,
-    //UpdateItemCommand,
+  DynamoDBClient,
+  GetItemCommand,
+  // PutItemCommand,
+  // DeleteItemCommand,
+  ScanCommand,
+  //UpdateItemCommand,
 } = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 const client = new DynamoDBClient();
 
 const getBankDetails = async (event) => {
-    const response = { statusCode: 200 };
-    try {
-        if (!event.pathParameters || !event.pathParameters.empId) {
-            throw new Error('empId is missing in the path parameters');
-          }
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE_NAME,
-            Key: marshall({ empId: event.pathParameters.empId }),
-        };
-        const { Item } = await client.send(new GetItemCommand(params));
-        console.log({ Item });
-        response.body = JSON.stringify({
-            message: "Successfully retrieved Employee bank.",
-            data: (Item) ? unmarshall(Item) : {},
-            rawData: Item,
-        });
-    } catch (e) {
-        console.error(e);
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            message: "Failed to get employee bank details.",
-            errorMsg: e.message,
-            errorStack: e.stack,
-        });
+  const response = { statusCode: 200 };
+  try {
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE_NAME,
+      Key: marshall({ empId: event.pathParameters.empId }),
+    };
+    const { Itemdata } = await client.send(new GetItemCommand(params));
+    console.log({ Item });
+    if (Itemdata && Itemdata.Item) {
+      response.statusCode = 200;
+      response.body = JSON.stringify({
+        message: "Successfully retrieved Employee bank.",
+        data: Itemdata ? unmarshall(Itemdata) : {},
+        rawData: Itemdata,
+      });
+    } else {
+      response.statusCode = 404;
+      response.body = JSON.stringify({
+        message: "Employee Bank details not found",
+      });
     }
-    return response;
+    // response.body = JSON.stringify({
+    //     message: "Successfully retrieved Employee bank.",
+    //     data: (Item) ? unmarshall(Item) : {},
+    //     rawData: Item,
+    // });
+  } catch (e) {
+    console.error(e);
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "Failed to get employee bank details.",
+      errorMsg: e.message,
+      errorStack: e.stack,
+    });
+  }
+  return response;
 };
 const getAllBanks = async () => {
-    const response = { statusCode: 200 };
-    try {
-        const { Items } = await client.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
-        response.body = JSON.stringify({
-            message: "Successfully retrieved all Employees bank details.",
-            data: Items.map((item) => unmarshall(item)),
-            Items,
-        });
-    } catch (e) {
-        console.error(e);
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            message: "Failed to retrieve posts.",
-            errorMsg: e.message,
-            errorStack: e.stack,
-        });
-    }
-    return response;
+  const response = { statusCode: 200 };
+  try {
+    const { Items } = await client.send(
+      new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME })
+    );
+    response.body = JSON.stringify({
+      message: "Successfully retrieved all Employees bank details.",
+      data: Items.map((item) => unmarshall(item)),
+      Items,
+    });
+  } catch (e) {
+    console.error(e);
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "Failed to retrieve posts.",
+      errorMsg: e.message,
+      errorStack: e.stack,
+    });
+  }
+  return response;
 };
 // const createPost = async (event) => {
 //     const response = { statusCode: 200 };
@@ -140,9 +152,9 @@ const getAllBanks = async () => {
 // };
 
 module.exports = {
-    getBankDetails,
-    // createPost,
-    // updatePost,
-    // deletePost,
-    getAllBanks,
+  getBankDetails,
+  // createPost,
+  // updatePost,
+  // deletePost,
+  getAllBanks,
 };
