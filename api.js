@@ -16,30 +16,28 @@ const getBankDetails = async (event) => {
       TableName: process.env.DYNAMODB_TABLE_NAME,
       Key: marshall({ empId: event.pathParameters.empId }),
     };
-    const { Itemdata } = await client.send(new GetItemCommand(params));
-    console.log({ Itemdata });
-    if (Itemdata && Itemdata.Item) {
-      console.log("entered into a 200");
-
-      response.statusCode = 200;
-      response.body = JSON.stringify({
-        message: "Successfully retrieved Employee bank.",
-        data: Itemdata ? unmarshall(Itemdata) : {},
-        rawData: Itemdata,
-      });
-    } else {
-      console.log("entered into a 404");
-
-      response.statusCode = 404;
-      response.body = JSON.stringify({
-        message: "Employee Bank details not found",
-      });
-    }
-    // response.body = JSON.stringify({
+    const { Item } = await client.send(new GetItemCommand(params));
+    console.log({ Item });
+    // if (Itemdata && Itemdata.Item) {
+    //   console.log("entered into a 200");
+    //   response.statusCode = 200;
+    //   response.body = JSON.stringify({
     //     message: "Successfully retrieved Employee bank.",
-    //     data: (Item) ? unmarshall(Item) : {},
-    //     rawData: Item,
-    // });
+    //     data: Itemdata ? unmarshall(Itemdata) : {},
+    //     rawData: Itemdata,
+    //   });
+    // } else {
+    //   console.log("entered into a 404");
+    //   response.statusCode = 404;
+    //   response.body = JSON.stringify({
+    //     message: "Employee Bank details not found",
+    //   });
+    // }
+    response.body = JSON.stringify({
+        message: "Successfully retrieved Employee bank.",
+        data: (Item) ? unmarshall(Item) : {},
+        rawData: Item,
+    });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
