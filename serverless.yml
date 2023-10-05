@@ -5,9 +5,9 @@ provider:
   stage: dev
   region: ap-south-1
   environment:
-    DYNAMODB_TABLE_NAME: employeeBankDetails
-  custom:
-    employeeBankDetails: employee-bank-details-table-${self:provider.stage}
+    DYNAMODB_TABLE_NAME: employee-bank-details-table-dev
+# custom:
+#   employeeBankDetails: employee-bank-details-table-${self:provider.stage}
 plugins:
   - serverless-iam-roles-per-function
 functions:
