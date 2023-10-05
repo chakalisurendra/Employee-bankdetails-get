@@ -30,17 +30,12 @@ const getBankDetails = async (event) => {
         data: unmarshall(Item),
       });
     }
-    // response.body = JSON.stringify({  
-    //     message: "Successfully retrieved Employee bank.",
-    //     data: (Item) ? unmarshall(Item) : {},
-    // });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
     response.body = JSON.stringify({
       message: "Failed to get employee bank details.",
       errorMsg: e.message,
-      errorStack: e.stack,
     });
   }
   return response;
@@ -54,7 +49,6 @@ const getAllBanks = async () => {
     response.body = JSON.stringify({
       message: "Successfully retrieved all Employees bank details.",
       data: Items.map((item) => unmarshall(item)),
-      Items,
     });
   } catch (e) {
     console.error(e);
@@ -62,7 +56,6 @@ const getAllBanks = async () => {
     response.body = JSON.stringify({
       message: "Failed to retrieve posts.",
       errorMsg: e.message,
-      errorStack: e.stack,
     });
   }
   return response;
