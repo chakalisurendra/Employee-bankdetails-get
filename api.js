@@ -26,7 +26,7 @@ const getBankDetails = async (event) => {
       });
     } else {
       response.body = JSON.stringify({
-        message: "Successfully retrieved Employee bank.",
+        message: "Successfully fetch Employee bank.",
         data: unmarshall(Item),
       });
     }
@@ -34,7 +34,7 @@ const getBankDetails = async (event) => {
     console.error(e);
     response.statusCode = 500;
     response.body = JSON.stringify({
-      message: "Failed to get employee bank details.",
+      message: "Failed to fetch employee bank details.",
       errorMsg: e.message,
     });
   }
@@ -46,15 +46,28 @@ const getAllBanks = async () => {
     const { Items } = await client.send(
       new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME })
     );
-    response.body = JSON.stringify({
-      message: "Successfully retrieved all Employees bank details.",
-      data: Items.map((item) => unmarshall(item)),
-    });
+   
+    if (!Items) {
+      // Handle item not found
+      response.statusCode = 404;
+      response.body = JSON.stringify({
+        message: "Employee bank details not found.",
+      });
+    } else {
+      response.body = JSON.stringify({
+        message: "Successfully fetch Employee bank details.",
+        data: unmarshall(Items),
+      });
+    }
+    // response.body = JSON.stringify({
+    //   message: "Successfully retrieved all Employees bank details.",
+    //   data: Items.map((item) => unmarshall(item)),
+    // });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
     response.body = JSON.stringify({
-      message: "Failed to retrieve posts.",
+      message: "Failed to fetch Employee bank details.",
       errorMsg: e.message,
     });
   }
