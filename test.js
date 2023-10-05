@@ -73,71 +73,69 @@ describe("positive getBankDetails", () => {
   });
 });
 
-
-
 describe("Get the all bank details of employees ", () => {
-    let originalSend;
-    before(() => {
-      // Store the original send method
-      originalSend = DynamoDBClient.prototype.send;
-    });
-  
-    after(() => {
-      // Restore the original send method after all tests
-      DynamoDBClient.prototype.send = originalSend;
-    });
-
-    it("should return all employee bank details when the scan operation is successful", async () => {
-        const mockItems = [ // Declare mockItems here
-          { empId: "1233", bankDetails: "Sample Bank Details 1" },
-          { empId: "4567", bankDetails: "Sample Bank Details 2" },
-        ];
-      
-        DynamoDBClient.prototype.send = async function (command) {
-          // Simulate a successful scan operation with mock data
-          return { Items: mockItems.map((item) => marshall(item)) };
-        }
-      
-        const response = await getAllBanks();
-      
-        expect(response.statusCode).to.equal(200);
-        expect(JSON.parse(response.body)).to.deep.equal({
-          message: "Successfully retrieved all Employees bank details.",
-          data: [
-            { empId: "1233", bankDetails: "Sample Bank Details 1" },
-            { empId: "4567", bankDetails: "Sample Bank Details 2" },
-          ],
-         
-        });
-      });
-      it("should return a 404 status when no items are found", async () => {
-        // Mock the behavior of DynamoDBClient's send method (ScanCommand)
-        DynamoDBClient.prototype.send = async function (command) {
-          // Simulate a successful scan operation with mock data
-          return { Items: [] };
-        }
-    
-        // Call your function with the mocked client
-        const response = await getAllBanks();
-    
-        // Assertions
-        expect(response.statusCode).to.equal(404);
-        expect(JSON.parse(response.body)).to.deep.equal({
-          message: "Employee bank details not found.",
-        });
-      });
-
-      it("should return an error response when an error occurs during the scan operation", async () => {
-        DynamoDBClient.prototype.send = async function (command) {
-          throw new Error("Scan operation failed");
-        };
-      
-        const response = await getAllBanks();
-      
-        expect(response.statusCode).to.equal(500);
-        expect(JSON.parse(response.body)).to.deep.equal({
-          message: "Failed to retrieved Employee bank details.",
-          errorMsg: "Scan operation failed", 
-        });
-      });
+  let originalSend;
+  before(() => {
+    // Store the original send method
+    originalSend = DynamoDBClient.prototype.send;
   });
+
+  after(() => {
+    // Restore the original send method after all tests
+    DynamoDBClient.prototype.send = originalSend;
+  });
+
+  it("should return all employee bank details when the scan operation is successful", async () => {
+    const mockItems = [
+      // Declare mockItems here
+      { empId: "1233", bankDetails: "Sample Bank Details 1" },
+      { empId: "4567", bankDetails: "Sample Bank Details 2" },
+    ];
+
+    DynamoDBClient.prototype.send = async function (command) {
+      // Simulate a successful scan operation with mock data
+      return { Items: mockItems.map((item) => marshall(item)) };
+    };
+
+    const response = await getAllBanks();
+
+    expect(response.statusCode).to.equal(200);
+    expect(JSON.parse(response.body)).to.deep.equal({
+      message: "Successfully retrieved all Employees bank details.",
+      data: [
+        { empId: "1233", bankDetails: "Sample Bank Details 1" },
+        { empId: "4567", bankDetails: "Sample Bank Details 2" },
+      ],
+    });
+  });
+  it("should return a 404 status when no items are found", async () => {
+    // Mock the behavior of DynamoDBClient's send method (ScanCommand)
+    DynamoDBClient.prototype.send = async function (command) {
+      // Simulate a successful scan operation with mock data
+      return { Items: [] };
+    };
+
+    // Call your function with the mocked client
+    const response = await getAllBanks();
+
+    // Assertions
+    expect(response.statusCode).to.equal(404);
+    expect(JSON.parse(response.body)).to.deep.equal({
+      message: "Employee bank details not found.",
+    });
+  });
+
+  it("should return an error response when an error occurs during the scan operation", async () => {
+    DynamoDBClient.prototype.send = async function (command) {
+      throw new Error("Scan operation failed");
+    };
+
+    const response = await getAllBanks();
+
+    expect(response.statusCode).to.equal(500);
+    expect(JSON.parse(response.body)).to.deep.equal({
+      message: "Failed to retrieved Employee bank details.",
+      errorMsg: "Scan operation failed",
+    });
+  });
+});
