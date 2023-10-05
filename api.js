@@ -26,7 +26,7 @@ const getBankDetails = async (event) => {
       });
     } else {
       response.body = JSON.stringify({
-        message: "Successfully fetch Employee bank.",
+        message: "Successfully retrieved Employee bank details.",
         data: unmarshall(Item),
       });
     }
@@ -34,7 +34,7 @@ const getBankDetails = async (event) => {
     console.error(e);
     response.statusCode = 500;
     response.body = JSON.stringify({
-      message: "Failed to fetch employee bank details.",
+      message: "Failed to retrieved employee bank details.",
       errorMsg: e.message,
     });
   }
@@ -47,16 +47,16 @@ const getAllBanks = async () => {
       new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME })
     );
    
-    if (!Items) {
-      // Handle item not found
+    if (Items.length === 0) {
+      // Handle the case where no items are found
       response.statusCode = 404;
       response.body = JSON.stringify({
         message: "Employee bank details not found.",
       });
     } else {
       response.body = JSON.stringify({
-        message: "Successfully fetch Employee bank details.",
-        data: unmarshall(Items),
+        message: "Successfully retrieved all Employees bank details.",
+        data: Items.map((item) => unmarshall(item)),
       });
     }
     // response.body = JSON.stringify({
@@ -67,93 +67,13 @@ const getAllBanks = async () => {
     console.error(e);
     response.statusCode = 500;
     response.body = JSON.stringify({
-      message: "Failed to fetch Employee bank details.",
+      message: "Failed to retrieved Employee bank details.",
       errorMsg: e.message,
     });
   }
   return response;
 };
-// const createPost = async (event) => {
-//     const response = { statusCode: 200 };
-//     try {
-//         const body = JSON.parse(event.body);
-//         const params = {
-//             TableName: process.env.DYNAMODB_TABLE_NAME,
-//             Item: marshall(body || {}),
-//         };
-//         const createResult = await db.send(new PutItemCommand(params));
-//         response.body = JSON.stringify({
-//             message: "Successfully created post.",
-//             createResult,
-//         });
-//     } catch (e) {
-//         console.error(e);
-//         response.statusCode = 500;
-//         response.body = JSON.stringify({
-//             message: "Failed to create post.",
-//             errorMsg: e.message,
-//             errorStack: e.stack,
-//         });
-//     }
-//     return response;
-// };
-// const updatePost = async (event) => {
-//     const response = { statusCode: 200 };
-//     try {
-//         const body = JSON.parse(event.body);
-//         const objKeys = Object.keys(body);
-//         const params = {
-//             TableName: process.env.DYNAMODB_TABLE_NAME,
-//             Key: marshall({ postId: event.pathParameters.postId }),
-//             UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
-//             ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
-//                 ...acc,
-//                 [`#key${index}`]: key,
-//             }), {}),
-//             ExpressionAttributeValues: marshall(objKeys.reduce((acc, key, index) => ({
-//                 ...acc,
-//                 [`:value${index}`]: body[key],
-//             }), {})),
-//         };
-//         const updateResult = await db.send(new UpdateItemCommand(params));
-//         response.body = JSON.stringify({
-//             message: "Successfully updated post.",
-//             updateResult,
-//         });
-//     } catch (e) {
-//         console.error(e);
-//         response.statusCode = 500;
-//         response.body = JSON.stringify({
-//             message: "Failed to update post.",
-//             errorMsg: e.message,
-//             errorStack: e.stack,
-//         });
-//     }
-//     return response;
-// };
-// const deletePost = async (event) => {
-//     const response = { statusCode: 200 };
-//     try {
-//         const params = {
-//             TableName: process.env.DYNAMODB_TABLE_NAME,
-//             Key: marshall({ postId: event.pathParameters.postId }),
-//         };
-//         const deleteResult = await db.send(new DeleteItemCommand(params));
-//         response.body = JSON.stringify({
-//             message: "Successfully deleted post.",
-//             deleteResult,
-//         });
-//     } catch (e) {
-//         console.error(e);
-//         response.statusCode = 500;
-//         response.body = JSON.stringify({
-//             message: "Failed to delete post.",
-//             errorMsg: e.message,
-//             errorStack: e.stack,
-//         });
-//     }
-//     return response;
-// };
+
 
 module.exports = {
   getBankDetails,
