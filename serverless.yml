@@ -32,7 +32,7 @@ functions:
     timeout: 5 # seconds
     events:
       - http:
-          path: posts
+          path: allEmployeeBankDetails
           method: GET
     iamRoleStatements:
       - Effect: "Allow"
