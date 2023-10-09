@@ -62,7 +62,7 @@ resources:
     PostsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: employee-bank-details-table-dev
+        TableName: create-new-employee-bank-details-table-dev
         AttributeDefinitions:
           - AttributeName: empId
             AttributeType: S
