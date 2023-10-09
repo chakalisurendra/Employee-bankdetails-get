@@ -86,22 +86,22 @@ const CustomerNumberRegex = /^\d{11,12}$/;
 const BankAccountNumber = /^\d{11,16}$/;
 // Validation function for bankDetails object
 const validation = (bankDetails) => {
-  if (nameRegex.test(bankDetails.BankName)) {
+  if (!nameRegex.test(bankDetails.BankName)) {
     return "BankName should be minimum 3 characters!";
   }
-  if (nameRegex.test(bankDetails.BranchName)) {
+  if (!nameRegex.test(bankDetails.BranchName)) {
     return "BranchName should be minimum 3 characters!";
   }
-  if (nameRegex.test(bankDetails.BranchAddress)) {
+  if (!nameRegex.test(bankDetails.BranchAddress)) {
     return "BranchAddress should be minimum 3 characters!";
   }
-  if (CustomerNumberRegex.test(bankDetails.CustomerNumber)) {
+  if (!CustomerNumberRegex.test(bankDetails.CustomerNumber)) {
     return "CustomerNumber should be minimum 11 characters!";
   }
-  if (BankAccountNumber.test(bankDetails.BankAccountNumber)) {
+  if (!BankAccountNumber.test(bankDetails.BankAccountNumber)) {
     return "BankAccountNumber should be minimum 11 digits!";
   }
-  //return null; // Validation passed
+  return null; // Validation passed
 };
 // Function to create an employee
 const createEmployeeBankDetails = async (event) => {
@@ -113,7 +113,8 @@ const createEmployeeBankDetails = async (event) => {
     console.log(bankDetails);
     // Perform validation on bankDetails
     const validationError = validation(bankDetails);
-    if (validationError) {
+    console.log();
+    if (!validationError === null) {
       // console.log("CustomerNumber:", bankDetails.CustomerNumber);
       // response.statusCode =500;
       // response.body=JSON.stringify({
