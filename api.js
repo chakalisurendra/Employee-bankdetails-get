@@ -124,63 +124,63 @@ const createEmployeeBankDetails = async (event) => {
         message: validationError,
       });
       //throw new Error(validationError);
-    }
-    // Check for required fields in the body
-    // if (!body.bankDetails.BankName || !body.bankDetails.BranchName || !body.bankDetails.BranchAddress || !body.bankDetails.BankAccountNumber) {
-    //   throw new Error('Required fields are missing.');
-    // }
-    // Fetch an item from DynamoDB based on postId
-    const employeeData = {
-      TableName: process.env.DYNAMODB_TABLE_NAME,
-      Key: marshall({ empId: body.empId }),
-    };
-    const { Item } = await client.send(new GetItemCommand(employeeData));
-    // Check if an item with the same postId exists in DynamoDB
-    if (Item) {
-      const item1 = { item2: Item ? unmarshall(Item) : {} };
-      console.log(item1);
-      // Check if bankDetails already exist in the fetched item
-      if (item1.item2.bankDetails) {
-        throw new Error("BankDetails already exists!");
-      }
-    }
-    // Define parameters for inserting an item into DynamoDB
-    const params = {
-      TableName: process.env.DYNAMODB_TABLE_NAME,
-      Item: marshall(
-        {
-          empId: body.empId,
-          bankDetails: {
-            BankName: bankDetails.BankName,
-            BranchName: bankDetails.BranchName,
-            BranchAddress: bankDetails.BranchAddress,
-            CustomerNumber: bankDetails.CustomerNumber,
-            BankAccountNumber: bankDetails.BankAccountNumber,
-            IsSalaryAccount: bankDetails.IsSalaryAccount,
-            IsActive: bankDetails.IsActive,
-            IsDeleted: bankDetails.IsDeleted,
-          },
+    } else {
+      // Check for required fields in the body
+      // if (!body.bankDetails.BankName || !body.bankDetails.BranchName || !body.bankDetails.BranchAddress || !body.bankDetails.BankAccountNumber) {
+      //   throw new Error('Required fields are missing.');
+      // }
+      // Fetch an item from DynamoDB based on postId
+      const employeeData = {
+        TableName: process.env.DYNAMODB_TABLE_NAME,
+        Key: marshall({ empId: body.empId }),
+      };
+      const { Item } = await client.send(new GetItemCommand(employeeData));
+      // Check if an item with the same postId exists in DynamoDB
+      if (Item) {
+        const item1 = { item2: Item ? unmarshall(Item) : {} };
+        console.log(item1);
+        // Check if bankDetails already exist in the fetched item
+        if (item1.item2.bankDetails) {
+          throw new Error("BankDetails already exists!");
         }
-        //{ removeUndefinedValues: true }
-      ),
-    };
-    // Insert the item into DynamoDB
-    await client.send(new PutItemCommand(params));
-    response.body = JSON.stringify({
-      message: "Successfully created post.",
-    });
+      }
+      // Define parameters for inserting an item into DynamoDB
+      const params = {
+        TableName: process.env.DYNAMODB_TABLE_NAME,
+        Item: marshall(
+          {
+            empId: body.empId,
+            bankDetails: {
+              BankName: bankDetails.BankName,
+              BranchName: bankDetails.BranchName,
+              BranchAddress: bankDetails.BranchAddress,
+              CustomerNumber: bankDetails.CustomerNumber,
+              BankAccountNumber: bankDetails.BankAccountNumber,
+              IsSalaryAccount: bankDetails.IsSalaryAccount,
+              IsActive: bankDetails.IsActive,
+              IsDeleted: bankDetails.IsDeleted,
+            },
+          }
+          //{ removeUndefinedValues: true }
+        ),
+      };
+      // Insert the item into DynamoDB
+      await client.send(new PutItemCommand(params));
+      response.body = JSON.stringify({
+        message: "Successfully created post.",
+      });
+    }
     //To through the exception if anything failing while creating bankDetails
   } catch (e) {
     console.error(e);
     response.body = JSON.stringify({
-      message: 'Failed to create BankDetails',
+      message: "Failed to create BankDetails",
       errorMsg: e.message,
       errorStack: e.stack,
     });
   }
   return response;
 };
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
