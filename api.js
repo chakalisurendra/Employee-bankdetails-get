@@ -132,7 +132,7 @@ const createEmployeeBankDetails = async (event) => {
     // Fetch an item from DynamoDB based on postId
     const employeeData = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
-      Key: marshall({ postId: body.postId }),
+      Key: marshall({ empId: body.empId }),
     };
     const { Item } = await client.send(new GetItemCommand(employeeData));
     // Check if an item with the same postId exists in DynamoDB
