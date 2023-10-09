@@ -86,19 +86,19 @@ const CustomerNumberRegex = /^\d{11,12}$/;
 const BankAccountNumber = /^\d{11,16}$/;
 // Validation function for bankDetails object
 const validation = (bankDetails) => {
-  if (!nameRegex.test(bankDetails.BankName)) {
+  if (nameRegex.test(bankDetails.BankName)) {
     return "BankName should be minimum 3 characters!";
   }
-  if (!nameRegex.test(bankDetails.BranchName)) {
+  if (nameRegex.test(bankDetails.BranchName)) {
     return "BranchName should be minimum 3 characters!";
   }
-  if (!nameRegex.test(bankDetails.BranchAddress)) {
+  if (nameRegex.test(bankDetails.BranchAddress)) {
     return "BranchAddress should be minimum 3 characters!";
   }
-  if (!CustomerNumberRegex.test(bankDetails.CustomerNumber)) {
+  if (CustomerNumberRegex.test(bankDetails.CustomerNumber)) {
     return "CustomerNumber should be minimum 11 characters!";
   }
-  if (!BankAccountNumber.test(bankDetails.BankAccountNumber)) {
+  if (BankAccountNumber.test(bankDetails.BankAccountNumber)) {
     return "BankAccountNumber should be minimum 11 digits!";
   }
   //return null; // Validation passed
