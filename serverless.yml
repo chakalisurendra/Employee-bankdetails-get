@@ -39,6 +39,24 @@ functions:
         Action:
           - "dynamodb:Scan"
         Resource: !GetAtt PostsTable.Arn
+ # //////////////////////////////////////////////////////////////////////////////////
+  createEmployee:
+    handler: api.createEmployeeBankDetails
+    name: create-new-employee-bank-details
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: employee/bankDetails
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+          - "dynamodb:GetItem"
+        Resource: !GetAtt PostsTable.Arn
+# //////////////////////////////////////////////////////////////////////////////////
+
 resources:
   Resources:
     PostsTable:
