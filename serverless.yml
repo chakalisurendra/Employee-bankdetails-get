@@ -5,7 +5,7 @@ provider:
   stage: dev
   region: ap-south-1
   environment:
-    DYNAMODB_TABLE_NAME: create-new-employee-bank-details-table-dev
+    DYNAMODB_TABLE_NAME: employee-bank-details-table-dev
 # custom:
 #   employeeBankDetails: employee-bank-details-table-${self:provider.stage}
 plugins:
@@ -62,7 +62,7 @@ resources:
     PostsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: create-new-employee-bank-details-table-dev
+        TableName: employee-bank-details-table-dev
         AttributeDefinitions:
           - AttributeName: empId
             AttributeType: S
