@@ -160,8 +160,8 @@ const createEmployeeBankDetails = async (event) => {
             IsActive: bankDetails.IsActive,
             IsDeleted: bankDetails.IsDeleted,
           },
-        },
-        { removeUndefinedValues: true }
+        }
+        //{ removeUndefinedValues: true }
       ),
     };
     // Insert the item into DynamoDB
