@@ -101,7 +101,7 @@ const validation = (bankDetails) => {
   if (!BankAccountNumber.test(bankDetails.BankAccountNumber)) {
     return "BankAccountNumber should be minimum 11 digits!";
   }
-  return null; // Validation passed
+  return "valide data"; // Validation passed
 };
 // Function to create an employee
 const createEmployeeBankDetails = async (event) => {
@@ -114,7 +114,7 @@ const createEmployeeBankDetails = async (event) => {
     // Perform validation on bankDetails
     const validationError = validation(bankDetails);
     console.log();
-    if (!validationError === null) {
+    if (!validationError === "valide data") {
       // console.log("CustomerNumber:", bankDetails.CustomerNumber);
       // response.statusCode =500;
       // response.body=JSON.stringify({
